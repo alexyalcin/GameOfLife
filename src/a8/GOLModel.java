@@ -50,11 +50,6 @@ public class GOLModel implements Runnable{
 		height = h;
 		spotBoard = new SpotBoard(width, height);
 		
-		for (int x = 0; x < width; x++) {
-			spotBoard.setNext(x, 20, true);
-			spotBoard.setNext(x, 80, true);
-		}
-		
 		spotBoard.updateBoard();
 	}
 	
