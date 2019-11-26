@@ -50,13 +50,12 @@ public class GOLBoardView extends JPanel{
 			Point mouseloc = MouseInfo.getPointerInfo().getLocation();
 			Point boardStart = this.getLocationOnScreen();
 			Point absolutePoint = new Point(mouseloc.x - boardStart.x, mouseloc.y - boardStart.y);
-			double tileWidth = (int) pixelWidth / spotBoard.getHeight();
-			double tileHeight = (int) pixelHeight / spotBoard.getWidth();
-			
-			Point topLeft = new Point((int) tileWidth * ((int) (absolutePoint.x / tileWidth)), 
-					(int) tileHeight * ((int) (absolutePoint.y / tileHeight)));
+			Point topLeft = new Point((int) (perPixelWidth * (int) (absolutePoint.x / perPixelWidth)), 
+					(int) (perPixelHeight * (int) (absolutePoint.y / perPixelHeight)));
+			System.out.println(topLeft);
+
 			g.setColor(Color.YELLOW);
-			g.drawRect(topLeft.x, topLeft.y, (int) tileWidth, (int) tileHeight);
+			g.drawRect(topLeft.x, topLeft.y, (int) perPixelWidth, (int) perPixelHeight);
 		}
 	}
 
