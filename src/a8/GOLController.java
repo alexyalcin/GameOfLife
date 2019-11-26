@@ -18,7 +18,6 @@ public class GOLController implements Runnable{
 	Thread activeThread;
 	boolean editColor = true;
 	
-	int delay = 100;
 	int mode;
 	
  public GOLController(GOLModel model, GOLView view) {
@@ -108,31 +107,16 @@ public void update() {
 public void toggleTorus() {
 	model.toggleWrap();
 }
-/* (non-Javadoc)
- * @see java.lang.Runnable#run()
- */
-@Override
-public void run() {
-	while (true) {
-		update();
-		try {
-			Thread.sleep(delay);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-}
-/**
- * @param i
- */
+
 public void startThread() {
-	activeThread = new Thread(this);
-	activeThread.start();
+	Thread modelThread = new Thread(model);
+	modelThread.start();
+	Thread viewThread = new Thread(this);
+	viewThread.start();
 }
 
 public void setDelay(int delay) {
-	this.delay = delay;
+	model.setDelay(delay);
 }
 /**
  * 
@@ -178,6 +162,22 @@ public void clicked(Point locationOnScreen) {
 		Point coord = new Point(((int) (absolutePoint.x / tileWidth)), 
 				 ((int) (absolutePoint.y / tileHeight)));
 		model.setPointAt(coord.x, coord.y, editColor);
+	}
+}
+/* (non-Javadoc)
+ * @see java.lang.Runnable#run()
+ */
+@Override
+public void run() {
+	while(true) {
+		view.setTiles(model.getSpotBoard());
+		view.repaint();	
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
  

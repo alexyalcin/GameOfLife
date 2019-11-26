@@ -14,7 +14,7 @@ import java.util.Random;
  * @author Alex
  *
  */
-public class GOLModel {
+public class GOLModel implements Runnable{
 	
 	private static final int DEFAULT_WIDTH = 100;
 	private static final int DEFAULT_HEIGHT = 100;
@@ -24,6 +24,7 @@ public class GOLModel {
 	private int surviveHighThreshold = 3;
 	private int birthHighThreshold = 3;
 	private int birthLowThreshold = 3;
+	int delay = 100;
 	
 	public double spawnRate = .05;
 	
@@ -34,6 +35,14 @@ public class GOLModel {
 	
 	public GOLModel() { 
 		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
+	
+	public void setDelay(int d) {
+		delay = d;
+	}
+	
+	public int getDelay() {
+		return delay;
 	}
 	
 	public GOLModel(int w, int h) {
@@ -187,6 +196,23 @@ public class GOLModel {
 	public void setPointAt(int x, int y, boolean editColor) {
 		spotBoard.setNext(x, y, editColor);
 		spotBoard.updateBoard();
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		while (true) {
+			this.updateTiles();
+			try {
+				Thread.sleep(delay);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 	}
 }

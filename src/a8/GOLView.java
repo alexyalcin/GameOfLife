@@ -468,4 +468,5 @@ public class GOLView extends JPanel implements ActionListener, KeyListener, Mous
 		
 	}
 
+
 }
