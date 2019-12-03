@@ -98,8 +98,8 @@ public class GOLView extends JPanel implements ActionListener, KeyListener, Mous
 		fieldDimensions = new JTextField[2];
 		fieldDimensions[0] = new JTextField();
 		fieldDimensions[1] = new JTextField();
-		fieldDimensions[0].setText("100");
-		fieldDimensions[1].setText("100");
+		fieldDimensions[0].setText("40");
+		fieldDimensions[1].setText("40");
 		fieldDimensions[0].setColumns(3);
 		fieldDimensions[1].setColumns(3);
 		setDimensionsButton = new JButton("Set");
@@ -182,7 +182,7 @@ public class GOLView extends JPanel implements ActionListener, KeyListener, Mous
 		uiGrid[1][1].add(stopSimulationButton);
 		
 		//Torus Mode
-		toggleTorus = new JButton("Torus: ON");
+		toggleTorus = new JButton("Torus: OFF");
 		toggleTorus.addActionListener(new ActionListener() {
 
 			@Override

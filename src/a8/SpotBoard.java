@@ -25,6 +25,19 @@ public class SpotBoard {
 		setBlankTiles(width, height);
 	}
 	
+	public SpotBoard(int width, int height, boolean[][] b) {
+		this.width = width;
+		this.height = height;
+		board = new boolean[width][height];
+		nextBoard = new boolean[width][height];
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				board[x][y] = b[x][y];
+				nextBoard[x][y] = b[x][y];
+			}
+		}
+	}
+	
 	public void setBlankTiles(int width, int height) {
 		this.width = width;
 		this.height = height;

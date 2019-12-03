@@ -16,8 +16,8 @@ import java.util.Random;
  */
 public class GOLModel implements Runnable{
 	
-	private static final int DEFAULT_WIDTH = 100;
-	private static final int DEFAULT_HEIGHT = 100;
+	private static final int DEFAULT_WIDTH = 40;
+	private static final int DEFAULT_HEIGHT = 40;
 	private int width, height;
 	
 	private int surviveLowThreshold = 2;
@@ -30,11 +30,66 @@ public class GOLModel implements Runnable{
 	
 	private SpotBoard spotBoard;
 	
-	private boolean wrap = true;
+	private boolean wrap = false;
 	private boolean paused = false;
 	
 	public GOLModel() { 
 		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
+	
+	public GOLModel(int w, int h) {
+		width = w;
+		height = h;
+		spotBoard = new SpotBoard(width, height);
+		this.setupGlider();
+		spotBoard.updateBoard();
+	}
+	
+	public void setupGlider() { 
+		boolean[][] b = new boolean[][] {
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false,  true, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false,  true, false,  true, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false,  true,  true, false, false, false, false, false,false,  true,  true, false, false, false, false, false, false, false,false, false, false, false, false,  true,  true, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false,  true, false, false, false,  true, false, false, false,false,  true,  true, false, false, false, false, false, false, false,false, false, false, false, false,  true,  true, false, false, false,},
+			{false, true,  true,  false, false, false, false, false, false, false,false, true,  false, false, false, false, false,  true, false, false,false,  true,  true, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, true,  true,  false, false, false, false, false, false, false,false, true,  false, false, false,  true, false,  true,  true, false,false, false, false,  true, false,  true, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, true,  false, false, false, false, false,  true, false, false,false, false, false, false, false,  true, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, true, false, false, false,  true, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false,  true,  true, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+			{false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, false, false, false, false,},
+
+		};
+		spotBoard = new SpotBoard(width, height, b);
 	}
 	
 	public void setDelay(int d) {
@@ -45,13 +100,6 @@ public class GOLModel implements Runnable{
 		return delay;
 	}
 	
-	public GOLModel(int w, int h) {
-		width = w;
-		height = h;
-		spotBoard = new SpotBoard(width, height);
-		
-		spotBoard.updateBoard();
-	}
 	
 	public void pause() {
 		paused = true;
