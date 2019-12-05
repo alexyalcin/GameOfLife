@@ -100,7 +100,6 @@ public class GOLModel implements Runnable{
 		return delay;
 	}
 	
-	
 	public void pause() {
 		paused = true;
 	}

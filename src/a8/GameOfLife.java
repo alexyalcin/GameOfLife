@@ -18,7 +18,7 @@ import javax.swing.Timer;
  * @author Alex
  *
  */
-public class RunGame {
+public class GameOfLife {
 	
 	private static String map = "src/example_map.txt";
 	private static GOLModel model;
